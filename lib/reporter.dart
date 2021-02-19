@@ -368,7 +368,7 @@ class Reporter {
   }
 
   String _accordionId(String accordionName) =>
-      '${accordionName.trim().replaceAll(' ', '_').replaceAll('/', '_').replaceAll('\', '_')}${accordionName.length}';
+      '${accordionName.trim().replaceAll(' ', '_').replaceAll('/', '_').replaceAll('\\', '_')}${accordionName.length}';
 
   String _modalId(String accordionName) =>
       "${_displayName(accordionName)}Modal";
