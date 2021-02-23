@@ -24,8 +24,7 @@ class Reporter {
   }) async {
     final ozzieFiles = await _getOzzieReports(rootFolderName);
     final imageGallery = _buildOzzieReport(ozzieFiles);
-    String htmlContent =
-        '$beginningOfHtmlReport$imageGallery$endingOfHtmlReport';
+    String htmlContent = '$beginningOfHtmlReport$imageGallery$endingOfHtmlReport';
     final filePath = '$rootFolderName/index.html';
     final file = File(filePath);
     await file.writeAsString(htmlContent);
@@ -43,12 +42,9 @@ class Reporter {
     String rootFolderName,
   ) async {
     final rootDirectory = Directory(rootFolderName);
-    final allFiles =
-        rootDirectory.listSync(recursive: false, followLinks: false);
-    final featureDirectories = allFiles
-        .where((f) => (f is Directory))
-        .map((f) => f as Directory)
-        .toList();
+    final allFiles = rootDirectory.listSync(recursive: false, followLinks: false);
+    final featureDirectories = allFiles.where((f) => (f is Directory)).map((f) => f as Directory).toList();
+    featureDirectories.sort((a, b) => a.path.compareTo(b.path));
     var reports = List<OzzieReport>();
     final scoreConfiguration = await PerformanceConfigurationProvider.provide();
     final performanceScorer = PerformanceScorer(scoreConfiguration);
@@ -93,11 +89,8 @@ class Reporter {
     final profileContents = profileDirectories.first
         .listSync(recursive: false, followLinks: false)
         .map((s) => s.path.replaceAll("$rootFolderName", ''));
-    final timelineReports =
-        profileContents.where((s) => s.endsWith('timeline.json')).toList();
-    final summaryReports = profileContents
-        .where((s) => s.endsWith('timeline_summary.json'))
-        .toList();
+    final timelineReports = profileContents.where((s) => s.endsWith('timeline.json')).toList();
+    final summaryReports = profileContents.where((s) => s.endsWith('timeline_summary.json')).toList();
     assert(timelineReports.length == summaryReports.length);
     summaryReports.asMap().forEach((i, r) {
       final rawContent = _readFileContents(rootFolderName, r);
@@ -176,8 +169,8 @@ class Reporter {
     """;
   }
 
-  String _buildScreenshotsAndPerformanceTabs(String accordionId,
-      String screenshotsHtmlSnippet, String performanceHtmlSnippet) {
+  String _buildScreenshotsAndPerformanceTabs(
+      String accordionId, String screenshotsHtmlSnippet, String performanceHtmlSnippet) {
     return """
 <nav>
   <div class="nav nav-tabs" id="nav-tab" role="tablist">
@@ -277,8 +270,7 @@ class Reporter {
     return buffer.toString();
   }
 
-  String _buildPerformanceReport(
-      String accordionId, List<PerformanceReport> performanceReports) {
+  String _buildPerformanceReport(String accordionId, List<PerformanceReport> performanceReports) {
     return """
 <div class="row">
   <div class="col-5">
@@ -370,14 +362,12 @@ class Reporter {
   String _accordionId(String accordionName) =>
       '${accordionName.trim().replaceAll(' ', '_').replaceAll('/', '_').replaceAll('\\', '_')}${accordionName.length}';
 
-  String _modalId(String accordionName) =>
-      "${_displayName(accordionName)}Modal";
+  String _modalId(String accordionName) => "${_displayName(accordionName)}Modal";
 
   String _displayName(String ozzieFile) => ozzieFile.replaceAll('ozzie/', '');
 
-  String _performanceReportTestName(String summaryFileName) => summaryFileName
-      .replaceAll('.timeline_summary.json', '')
-      .replaceAll('profiling/', '');
+  String _performanceReportTestName(String summaryFileName) =>
+      summaryFileName.replaceAll('.timeline_summary.json', '').replaceAll('profiling/', '');
 
   String _readFileContents(String rootFolderName, String relativePath) {
     final file = File('$rootFolderName/$relativePath');
