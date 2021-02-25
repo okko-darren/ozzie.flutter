@@ -140,11 +140,8 @@ class Reporter {
             ${_displayName(report.reportName)}
           </button>
         </div>
-        <div class="col-9">
+        <div class="col-4">
           <div class="float-right">
-            ${_performanceBadge("Missed Frames", report.performanceScore?.missedFrames?.infoMessage, report.performanceScore?.missedFrames?.rating)}
-            ${_performanceBadge("Frame Build Rate", report.performanceScore?.frameBuildRate?.infoMessage, report.performanceScore?.frameBuildRate?.rating)}
-            ${_performanceBadge("Frame Rasterizer Rate", report.performanceScore?.frameRasterizerRate?.infoMessage, report.performanceScore?.frameRasterizerRate?.rating)}
             <a href="./${_displayName(report.reportName)}/${_displayName(report.reportName)}.zip" class="btn btn-outline-primary" download>
               Download Images
             </a>
@@ -363,7 +360,8 @@ class Reporter {
   String _accordionId(String accordionName) =>
       '${accordionName.trim().replaceAll(' ', '_').replaceAll('/', '_').replaceAll('\\', '_')}${accordionName.length}';
 
-  String _modalId(String accordionName) => "${_displayName(accordionName)}Modal";
+  String _modalId(String accordionName) =>
+      "d_${_displayName(accordionName).replaceAll(' ', '_').replaceAll('/', '_').replaceAll('\\', '_')}Modal";
 
   String _displayName(String ozzieFile) => ozzieFile.replaceAll('ozzie/', '');
 
